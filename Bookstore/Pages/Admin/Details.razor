@@ -1,0 +1,41 @@
+﻿@*John Berthelsen*@
+@*Admin details view of each book*@
+
+@page "/admin/books/details/{id:long}"
+
+<h3 class="bg-info text-white text-center p-1">Details</h3>
+
+<table class="table table-sm table-bordered table-striped">
+    <tbody>
+        <tr><th>Book ID:</th><td>@books.BookId</td></tr>
+        <tr><th>Title:</th><td>@books.Title</td></tr>
+        <tr><th>Author:</th><td>@books.Author</td></tr>
+        <tr><th>Publisher:</th><td>@books.Publisher</td></tr>
+        <tr><th>ISBN:</th><td>@books.Isbn</td></tr>
+        <tr><th>Classification:</th><td>@books.Classification</td></tr>
+        <tr><th>Category:</th><td>@books.Category</td></tr>
+        <tr><th>Page Count:</th><td>@books.PageCount</td></tr>
+        <tr><th>Price:</th><td>@books.Price</td></tr>
+    </tbody>
+</table>
+
+<NavLink class="btn btn-warning" href="@EditUrl">Edit</NavLink>
+<NavLink class="btn btn-secondary" href="/admin/books">Back</NavLink>
+
+@code {
+
+    [Inject]
+    public IBookstoreRepository repo { get; set; }
+
+    [Parameter]
+    public long Id { get; set; }
+
+    public Book books { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        books = repo.Books.FirstOrDefault(x => x.BookId == Id);
+    }
+
+    public string EditUrl => $"/admin/books/edit/{books.BookId}";
+}
